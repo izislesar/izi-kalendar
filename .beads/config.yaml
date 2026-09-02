@@ -1,0 +1,2 @@
+# Beads repository configuration
+sync.remote: "git+ssh://git@github.com/izislesar/izi-kalendar.git"
