@@ -6,12 +6,36 @@ if ! command -v bd >/dev/null 2>&1; then
   exit 1
 fi
 
-# .beads/ is committed because it contains repository config, so checking only
-# for the directory is insufficient. Verify that an actual Beads database is
-# resolvable and initialize it when this is a fresh clone.
-if ! bd where >/dev/null 2>&1; then
-  echo "Initializing Beads database..."
+# The sprint needs Beads only as a local execution database. On some Beads/Dolt
+# versions, bd init auto-adopts git origin and immediately tries to clone/pull
+# refs/dolt/data. That is unnecessary here and can fail when Dolt's SSH client
+# does not honor the user's GitHub SSH configuration. Temporarily hide origin
+# while initializing, then restore it unchanged for normal git fetch/push.
+init_beads_local() {
+  local hidden_remote=""
+  if git remote get-url origin >/dev/null 2>&1; then
+    hidden_remote="__beads_bootstrap_origin"
+    if git remote get-url "$hidden_remote" >/dev/null 2>&1; then
+      echo "error: temporary git remote $hidden_remote already exists" >&2
+      exit 1
+    fi
+    git remote rename origin "$hidden_remote"
+    trap 'git remote rename __beads_bootstrap_origin origin >/dev/null 2>&1 || true' EXIT
+  fi
+
+  mkdir -p .beads
+  chmod 700 .beads 2>/dev/null || true
   bd init --quiet
+
+  if [ -n "$hidden_remote" ]; then
+    git remote rename "$hidden_remote" origin
+    trap - EXIT
+  fi
+}
+
+if ! bd where >/dev/null 2>&1; then
+  echo "Initializing local Beads database..."
+  init_beads_local
 fi
 
 # If the sprint epic already exists, do not duplicate the graph.
