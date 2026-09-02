@@ -25,7 +25,7 @@ init_beads_local() {
 
   mkdir -p .beads
   chmod 700 .beads 2>/dev/null || true
-  bd init --quiet
+  bd init --quiet --skip-agents
 
   if [ -n "$hidden_remote" ]; then
     git remote rename "$hidden_remote" origin
@@ -33,7 +33,10 @@ init_beads_local() {
   fi
 }
 
-if ! bd where >/dev/null 2>&1; then
+# `bd where` is not a sufficient probe here: a committed .beads/config.yaml
+# can make it succeed even when the actual Dolt database does not exist.
+# Probe a command that requires a real store instead.
+if ! bd list --json >/dev/null 2>&1; then
   echo "Initializing local Beads database..."
   init_beads_local
 fi
