@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "izi_kalendar",
+  "project_id": "5bf24e2b-efee-4b69-82a7-ff015c3796d3"
+}
