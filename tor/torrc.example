@@ -1,8 +1,11 @@
 # Example Tor onion-service config for the demo.
-# Keep the generated hidden-service private keys OUT of git.
+# This file is a template only. Tor creates hostname, hs_ed25519_* keys,
+# and other private material inside HiddenServiceDir on first start. Never
+# commit that directory or copy its contents into this repository.
 #
-# App should be served locally on 127.0.0.1:8080.
-# Adjust paths for the machine running Tor.
+# The static app is served locally on 127.0.0.1:8080. Tor is the only
+# intended public entrypoint; do not replace this address with 0.0.0.0.
+# Adjust the HiddenServiceDir path for the machine running Tor.
 
 HiddenServiceDir /var/lib/tor/izi-kalendar/
 HiddenServicePort 80 127.0.0.1:8080
