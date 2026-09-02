@@ -6,7 +6,11 @@ if ! command -v bd >/dev/null 2>&1; then
   exit 1
 fi
 
-if [ ! -d .beads ]; then
+# .beads/ is committed because it contains repository config, so checking only
+# for the directory is insufficient. Verify that an actual Beads database is
+# resolvable and initialize it when this is a fresh clone.
+if ! bd where >/dev/null 2>&1; then
+  echo "Initializing Beads database..."
   bd init --quiet
 fi
 
