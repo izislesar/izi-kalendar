@@ -1,9 +1,14 @@
 .shooting-range {
   --range-acid: var(--acid, #b9ff53);
-  border: 1px solid #303833;
-  background: linear-gradient(145deg, rgba(24, 33, 25, .94), rgba(7, 10, 8, .98));
-  padding: clamp(20px, 4vw, 36px);
+  position: relative;
+  grid-column: 2;
+  border: 1px solid rgba(193,255,90,.18);
+  border-radius: 24px;
+  background: linear-gradient(145deg, rgba(25, 34, 27, .9), rgba(6, 9, 7, .96));
+  padding: clamp(28px, 4vw, 44px);
   overflow: hidden;
+  box-shadow: 0 36px 100px #000a, inset 0 1px rgba(255,255,255,.04);
+  backdrop-filter: blur(24px);
 }
 
 .shooting-range--recoil { animation: range-recoil .18s ease-out; }
@@ -12,44 +17,57 @@
 .shooting-range__controls { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
 .shooting-range__eyebrow { margin: 0 0 10px; color: var(--range-acid); font: 10px ui-monospace, monospace; letter-spacing: .13em; }
 .shooting-range h2 { margin: 0; font-size: clamp(30px, 5vw, 48px); letter-spacing: -.05em; }
-.shooting-range__weapon { display: grid; justify-items: end; gap: 4px; color: #b9c2bb; font: 10px ui-monospace, monospace; letter-spacing: .08em; }
+.shooting-range__weapon { min-width: 126px; display: grid; justify-items: end; gap: 5px; padding: 13px 15px; border: 1px solid rgba(193,255,90,.18); border-radius: 12px; background: rgba(193,255,90,.05); color: #b9c2bb; font: 10px ui-monospace, monospace; letter-spacing: .08em; }
 .shooting-range__weapon strong { color: var(--range-acid); font-size: 14px; }
 .shooting-range__weapon--blank strong { color: #d4b768; }
 .shooting-range__weapon--jammed strong, .shooting-range__weapon--empty strong { color: #ed8274; }
 .shooting-range__message { min-height: 24px; margin: 28px 0 18px; color: #dfe8e0; }
+.shooting-range__verification { position: absolute; z-index: 3; left: 50%; top: 48%; transform: translate(-50%, -50%); width: max-content; max-width: 80%; padding: 14px 18px; border: 1px solid rgba(193,255,90,.28); border-radius: 12px; background: rgba(6,10,7,.94); color: var(--range-acid); box-shadow: 0 18px 60px #000b; font: 10px ui-monospace, monospace; letter-spacing: .1em; }
 
 .shooting-range__targets {
   position: relative;
   display: grid;
   grid-template-columns: repeat(7, minmax(36px, 1fr));
   gap: 10px;
-  min-height: 220px;
-  padding: 16px;
-  border: 1px solid #354039;
-  background: repeating-linear-gradient(135deg, rgba(185, 255, 83, .025) 0 2px, transparent 2px 12px), #0c100d;
+  min-height: 340px;
+  padding: 24px;
+  border: 1px solid rgba(193,255,90,.12);
+  border-radius: 18px;
+  background: radial-gradient(circle at 50% 50%, rgba(193,255,90,.05), transparent 54%), repeating-linear-gradient(135deg, rgba(185, 255, 83, .025) 0 2px, transparent 2px 14px), #090d0a;
   cursor: crosshair;
 }
 
 .shooting-range__target {
+  --nudge-x: 7px;
+  --nudge-y: -5px;
   aspect-ratio: 1;
   min-width: 0;
-  border: 1px solid #58655d;
+  border: 1px solid #66736a;
   border-radius: 50%;
   color: #f0f5f0;
-  background: radial-gradient(circle, #273129 0 23%, #111611 25% 46%, #697669 48% 50%, #111611 52%);
+  background: radial-gradient(circle, var(--range-acid) 0 5%, #253329 7% 24%, #0b100c 26% 45%, #667269 47% 50%, #101611 52%);
   font: 600 12px ui-monospace, monospace;
   transition: transform .12s ease, border-color .12s ease;
+  animation: target-drift 3.8s ease-in-out infinite alternate;
 }
 
-.shooting-range__target:hover:not(:disabled) { transform: scale(1.08); border-color: var(--range-acid); }
+.shooting-range__target:nth-child(3n) { --nudge-x: -8px; --nudge-y: 5px; animation-delay: -.9s; }
+.shooting-range__target:nth-child(4n) { --nudge-x: 5px; --nudge-y: 8px; animation-delay: -1.8s; }
+.shooting-range__target:nth-child(5n) { --nudge-x: -6px; --nudge-y: -7px; animation-delay: -2.6s; }
+.shooting-range__target:hover:not(:disabled) { transform: translate(var(--nudge-x), var(--nudge-y)) scale(1.11); border-color: var(--range-acid); box-shadow: 0 0 0 4px rgba(193,255,90,.07), 0 0 28px rgba(193,255,90,.13); }
 .shooting-range__target:disabled { cursor: not-allowed; opacity: .5; }
 .shooting-range__muzzle { position: absolute; inset: 50% auto auto 50%; width: 110px; height: 110px; transform: translate(-50%, -50%); background: radial-gradient(circle, #fff8c1 0 5%, #edc45f 15%, rgba(237, 196, 95, 0) 67%); pointer-events: none; animation: muzzle-flash .18s ease-out forwards; }
+.shooting-range__crosshair { position: absolute; z-index: 5; width: 34px; height: 34px; margin: -17px 0 0 -17px; border: 1px solid rgba(193,255,90,.9); border-radius: 50%; pointer-events: none; filter: drop-shadow(0 0 6px rgba(193,255,90,.55)); transition: left 150ms cubic-bezier(.2,.7,.2,1), top 150ms cubic-bezier(.2,.7,.2,1); }
+.shooting-range__crosshair::before, .shooting-range__crosshair::after { content: ""; position: absolute; left: 50%; top: 50%; background: var(--range-acid); transform: translate(-50%,-50%); }
+.shooting-range__crosshair::before { width: 44px; height: 1px; }
+.shooting-range__crosshair::after { width: 1px; height: 44px; }
 .shooting-range__controls { min-height: 48px; margin-top: 18px; color: #aeb8b0; font: 11px ui-monospace, monospace; letter-spacing: .05em; }
-.shooting-range__service { border: 1px solid var(--range-acid); padding: 11px 18px; color: #10140f; background: var(--range-acid); font: 700 11px ui-monospace, monospace; letter-spacing: .1em; }
+.shooting-range__service { margin-left: auto; border: 1px solid var(--range-acid); border-radius: 11px; padding: 13px 20px; color: #10140f; background: var(--range-acid); font: 700 10px ui-monospace, monospace; letter-spacing: .1em; }
 .shooting-range__service:disabled { opacity: .6; }
 
 @keyframes range-recoil { 30% { transform: translate(4px, 3px) rotate(.25deg); } 100% { transform: translate(0); } }
 @keyframes muzzle-flash { to { transform: translate(-50%, -50%) scale(1.8); opacity: 0; } }
+@keyframes target-drift { from { translate: -2px 1px; } to { translate: 3px -2px; } }
 
 @media (max-width: 540px) {
   .shooting-range__header { align-items: flex-start; }

@@ -8,6 +8,8 @@ type PetPanelProps = {
 
 export function PetPanel({ ammo, canFeed, onFeed }: PetPanelProps) {
   const [lastFood, setLastFood] = useState<string | null>(null)
+  const foods = ['Печенье', 'Луковица', 'История браузера']
+  const orderedFoods = lastFood ? [...foods.filter((food) => food !== lastFood), lastFood] : foods
   const feed = (food: string) => {
     if (!canFeed) return
     setLastFood(food)
@@ -15,16 +17,16 @@ export function PetPanel({ ammo, canFeed, onFeed }: PetPanelProps) {
   }
 
   return (
-    <aside className="pet-panel" aria-label="Pet and ammunition">
+    <aside className={`pet-panel ${lastFood ? 'pet-panel--fed' : ''}`} aria-label="Питомец и боеприпасы">
       <div className="pet-face" aria-hidden="true"><span>•</span><i /><span>•</span></div>
       <div>
-        <p className="pet-label">PET // {lastFood ? 'CONTENT' : 'HUNGRY'}</p>
-        <strong>{ammo} ROUNDS</strong>
+        <p className="pet-label">ПИТОМЕЦ // {lastFood ? 'ДОВОЛЕН' : 'ГОЛОДЕН'}</p>
+        <strong>{ammo} ПАТРОНА</strong>
       </div>
-      {ammo === 0 && <p className="pet-warning">No ammunition. Feed Pet to continue.</p>}
-      {lastFood && <p className="pet-result">Pet consumed {lastFood.toLowerCase()}. +3 ammunition.</p>}
+      {ammo === 0 && <p className="pet-warning">Нет боеприпасов. Покормите Питомца.</p>}
+      {lastFood && <p className="pet-result">Питомец получил «{lastFood.toLowerCase()}». +3 патрона.</p>}
       <div className="feed-actions">
-        {['Cookie', 'Onion', 'Browser history'].map((food) => (
+        {orderedFoods.map((food) => (
           <button key={food} onClick={() => feed(food)} disabled={!canFeed || ammo > 0}>{food}</button>
         ))}
       </div>

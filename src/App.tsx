@@ -13,49 +13,49 @@ function App() {
   const [selectedDay, setSelectedDay] = useState(17)
   const [pendingEvent, setPendingEvent] = useState<CalendarEvent | null>(null)
   const [createdEvent, setCreatedEvent] = useState<CalendarEvent | null>(null)
-  const [notice, setNotice] = useState('Your browser has been fingerprinted.')
+  const [notice, setNotice] = useState('Ваш браузер идентифицирован.')
 
   const acceptHandshake = () => {
-    setNotice("Handshake accepted. Calendar's opinion of you has changed.")
+    setNotice('Рукопожатие принято. Мнение Календаря о вас изменилось.')
     setPhase('range')
   }
 
   const feedPet = (rounds: number, food: string) => {
     setAmmo(rounds)
-    setNotice(`Your ${food.toLowerCase()} preferences have been fingerprinted.`)
+    setNotice(`Предпочтения «${food.toLowerCase()}» идентифицированы.`)
   }
 
   const selectDate = (day: number) => {
     setSelectedDay(day)
-    setNotice('Your shooting style has been fingerprinted.')
+    setNotice('Ваш стиль стрельбы идентифицирован.')
     setPhase('lockpick')
   }
 
   const confirmDate = () => {
-    setNotice('Your lockpicking behavior has been fingerprinted.')
+    setNotice('Ваше поведение при вскрытии замка идентифицировано.')
     setPhase('details')
   }
 
   const requestSave = (event: CalendarEvent) => {
     setPendingEvent(event)
-    setNotice('Calendar expected a farewell.')
+    setNotice('Календарь ожидал прощания.')
     setPhase('farewell')
   }
 
   const finish = () => {
     if (!pendingEvent) return
     setCreatedEvent(pendingEvent)
-    setNotice('Your meeting has been fingerprinted.')
+    setNotice('Ваша встреча идентифицирована.')
     setPhase('done')
   }
 
   return (
     <main className="app-shell">
       <header className="topbar">
-        <a className="brand" href="/" aria-label="Calendar home">
-          <span className="brand-mark">C</span><span>Calendar</span>
+        <a className="brand" href="/" aria-label="Главная Календаря">
+          <span className="brand-mark">К</span><span>Календарь</span>
         </a>
-        <div className="connection"><span /> ONION ROUTE ACTIVE</div>
+        <div className="connection"><span /> ONION-МАРШРУТ АКТИВЕН</div>
       </header>
 
       <ParasiteUI phase={phase} notice={notice} />
@@ -65,15 +65,15 @@ function App() {
 
       <section className="workspace" data-phase={phase}>
         <div className="status-rail">
-          <p>PROTOCOL 09.02</p><p>LOCAL SESSION</p><p>NO SYNC</p>
+          <p>ПРОТОКОЛ 09.02</p><p>ЛОКАЛЬНАЯ СЕССИЯ</p><p>БЕЗ СИНХРОНИЗАЦИИ</p>
         </div>
 
         {phase === 'home' && (
           <article className="phase-card">
-            <p className="eyebrow">SECURE CONNECTION ESTABLISHED</p>
-            <h1>Calendar is waiting.</h1>
-            <p className="lede">One appointment may be created at this time.</p>
-            <button className="primary" onClick={() => setPhase('handshake')}>CREATE MEETING</button>
+            <p className="eyebrow">ЗАЩИЩЁННОЕ СОЕДИНЕНИЕ УСТАНОВЛЕНО</p>
+            <h1>Календарь ожидает.</h1>
+            <p className="lede">В данный момент может быть создана одна встреча.</p>
+            <button className="primary" onClick={() => setPhase('handshake')}>СОЗДАТЬ ВСТРЕЧУ</button>
           </article>
         )}
         {phase === 'handshake' && <HandshakeGate mode="handshake" onComplete={acceptHandshake} />}
@@ -83,17 +83,17 @@ function App() {
         {phase === 'farewell' && <HandshakeGate mode="farewell" onComplete={finish} />}
         {phase === 'done' && createdEvent && (
           <section className="done-panel panel">
-            <p className="eyebrow">RECORD ACCEPTED</p>
-            <h1>Meeting created.</h1>
-            <p className="lede">Thank you for respecting Calendar.</p>
+            <p className="eyebrow">ЗАПИСЬ ПРИНЯТА</p>
+            <h1>Встреча создана.</h1>
+            <p className="lede">Благодарим за уважение к Календарю.</p>
             <EventCard event={createdEvent} />
           </section>
         )}
       </section>
 
       <footer>
-        <span>CALENDAR SYSTEMS // PRIVATE APPOINTMENT INFRASTRUCTURE</span>
-        <span>SESSION: LOCAL</span>
+        <span>СИСТЕМЫ КАЛЕНДАРЯ // ЧАСТНАЯ ИНФРАСТРУКТУРА ВСТРЕЧ</span>
+        <span>СЕССИЯ: ЛОКАЛЬНАЯ</span>
       </footer>
     </main>
   )

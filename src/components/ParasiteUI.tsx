@@ -1,29 +1,43 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Phase } from '../phase'
 
 const ads: Record<Phase, string> = {
-  home: 'STOP BROWSER FINGERPRINTING — Protect yourself from sites like this one.',
-  handshake: 'ARE YOU BEING TRACKED? Yes. FIND OUT MORE',
-  range: 'PREMIUM AMMUNITION — Up to 12% fewer blanks.',
-  lockpick: 'BUY THURSDAY — Limited availability.',
-  details: 'CALENDAR PRO — Still contains advertisements.',
-  farewell: 'VPN FOR TOR — Add another layer for no particular reason.',
-  done: 'HOT SINGLES IN YOUR TIMEZONE — UTC+3.',
+  home: 'ОСТАНОВИТЕ ИДЕНТИФИКАЦИЮ — Защититесь от сайтов вроде этого.',
+  handshake: 'ВАС ОТСЛЕЖИВАЮТ? Да. УЗНАТЬ БОЛЬШЕ',
+  range: 'ПРЕМИАЛЬНЫЕ ПАТРОНЫ — До 12% меньше холостых.',
+  lockpick: 'КУПИТЬ ЧЕТВЕРГ — Предложение ограничено.',
+  details: 'КАЛЕНДАРЬ PRO — Реклама всё ещё включена.',
+  farewell: 'VPN ДЛЯ TOR — Ещё один слой без особой причины.',
+  done: 'ГОРЯЧИЕ ЗНАКОМСТВА В ВАШЕМ ЧАСОВОМ ПОЯСЕ — UTC+3.',
 }
+const interruptions = [
+  'Ваше поведение мыши идентифицировано.',
+  'Календарь заметил промедление.',
+  'Ваше предпочтение вторников записано.',
+]
 
 export function ParasiteUI({ phase, notice }: { phase: Phase; notice: string }) {
   const [adVisible, setAdVisible] = useState(true)
+  const [interruption, setInterruption] = useState(0)
+  useEffect(() => {
+    const timer = window.setInterval(() => setInterruption((value) => (value + 1) % interruptions.length), 3500)
+    return () => window.clearInterval(timer)
+  }, [])
   return (
     <>
       <div className="fingerprint-toast" role="status">
         <span className="scan-dot" />
-        <div><small>LOCAL OBSERVATION</small><p>{notice}</p></div>
+        <div><small>ЛОКАЛЬНОЕ НАБЛЮДЕНИЕ</small><p>{notice}</p></div>
+      </div>
+      <div className="interruption-toast" role="status">
+        <small>СЛУЖЕБНОЕ УВЕДОМЛЕНИЕ</small>
+        <p>{interruptions[interruption]}</p>
       </div>
       {adVisible && (
-        <aside className="fake-ad" aria-label="Advertisement">
-          <small>ADVERTISEMENT // LOCAL</small>
+        <aside className="fake-ad" aria-label="Реклама">
+          <small>РЕКЛАМА // ЛОКАЛЬНАЯ</small>
           <p>{ads[phase]}</p>
-          <button type="button" aria-label="Dismiss advertisement" onClick={() => setAdVisible(false)}>×</button>
+          <button type="button" aria-label="Закрыть рекламу" onClick={() => setAdVisible(false)}>×</button>
         </aside>
       )}
     </>

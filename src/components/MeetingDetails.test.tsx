@@ -7,11 +7,11 @@ describe('MeetingDetails', () => {
     const onSave = vi.fn()
     render(<MeetingDetails selectedDay={17} onSave={onSave} />)
 
-    fireEvent.change(screen.getByLabelText('Title'), { target: { value: 'Demo review' } })
-    fireEvent.click(screen.getByRole('button', { name: 'SAVE MEETING' }))
+    fireEvent.change(screen.getByLabelText('Название'), { target: { value: 'Обзор демо' } })
+    fireEvent.click(screen.getByRole('button', { name: 'СОХРАНИТЬ ВСТРЕЧУ' }))
 
     expect(onSave).toHaveBeenCalledWith({
-      title: 'Demo review',
+      title: 'Обзор демо',
       date: '2026-09-17',
       time: '14:00',
       duration: '30',
@@ -19,8 +19,8 @@ describe('MeetingDetails', () => {
   })
 
   it('renders the created meeting as a real local event card', () => {
-    render(<EventCard event={{ title: 'Demo review', date: '2026-09-17', time: '14:00', duration: '30' }} />)
-    expect(screen.getByRole('article', { name: 'Created meeting' })).toHaveTextContent('Demo review')
-    expect(screen.getByText(/17 september 2026/i)).toBeInTheDocument()
+    render(<EventCard event={{ title: 'Обзор демо', date: '2026-09-17', time: '14:00', duration: '30' }} />)
+    expect(screen.getByRole('article', { name: 'Созданная встреча' })).toHaveTextContent('Обзор демо')
+    expect(screen.getByText(/17 сентября 2026/i)).toBeInTheDocument()
   })
 })

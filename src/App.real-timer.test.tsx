@@ -5,30 +5,30 @@ import App from './App'
 async function completeDemo(title: string) {
   const startedAt = Date.now()
   render(<App />)
-  fireEvent.click(screen.getByRole('button', { name: 'CREATE MEETING' }))
-  fireEvent.click(screen.getByRole('button', { name: 'Firm' }))
-  fireEvent.click(screen.getByRole('button', { name: 'Cookie' }))
+  fireEvent.click(screen.getByRole('button', { name: 'СОЗДАТЬ ВСТРЕЧУ' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Твёрдое' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Печенье' }))
 
-  fireEvent.click(screen.getByRole('button', { name: 'September 17' }))
-  fireEvent.click(screen.getByRole('button', { name: 'RELOAD' }))
-  await waitFor(() => expect(screen.getByText('READY')).toBeInTheDocument(), { timeout: 1500 })
+  fireEvent.click(screen.getByRole('button', { name: '17 сентября' }))
+  fireEvent.click(screen.getByRole('button', { name: 'ПЕРЕЗАРЯДИТЬ' }))
+  await waitFor(() => expect(screen.getByText('ГОТОВ')).toBeInTheDocument(), { timeout: 1500 })
 
-  fireEvent.click(screen.getByRole('button', { name: 'September 17' }))
-  fireEvent.click(screen.getByRole('button', { name: 'FIX' }))
-  await waitFor(() => expect(screen.getByText('READY')).toBeInTheDocument(), { timeout: 1500 })
+  fireEvent.click(screen.getByRole('button', { name: '17 сентября' }))
+  fireEvent.click(screen.getByRole('button', { name: 'УСТРАНИТЬ' }))
+  await waitFor(() => expect(screen.getByText('ГОТОВ')).toBeInTheDocument(), { timeout: 1500 })
 
-  fireEvent.click(screen.getByRole('button', { name: 'September 17' }))
-  expect(screen.getByText('September 17 selected.')).toBeInTheDocument()
-  await waitFor(() => expect(screen.getByText('Confirm selected date.')).toBeInTheDocument(), { timeout: 1000 })
-  fireEvent.click(screen.getByRole('button', { name: 'TURN LOCK' }))
-  fireEvent.click(screen.getByRole('button', { name: 'TURN LOCK' }))
-  expect(screen.getByText('Date confirmed.')).toBeInTheDocument()
-  await waitFor(() => expect(screen.getByLabelText('Title')).toBeInTheDocument(), { timeout: 1000 })
-  fireEvent.change(screen.getByLabelText('Title'), { target: { value: title } })
-  fireEvent.click(screen.getByRole('button', { name: 'SAVE MEETING' }))
-  fireEvent.click(screen.getByRole('button', { name: 'Goodbye' }))
+  fireEvent.click(screen.getByRole('button', { name: '17 сентября' }))
+  expect(screen.getByText('17 сентября выбрано.')).toBeInTheDocument()
+  await waitFor(() => expect(screen.getByText('Подтвердите дату.')).toBeInTheDocument(), { timeout: 2200 })
+  fireEvent.click(screen.getByRole('button', { name: 'ПОВЕРНУТЬ ЗАМОК' }))
+  fireEvent.click(screen.getByRole('button', { name: 'ПОВЕРНУТЬ ЗАМОК' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Да' }))
+  await waitFor(() => expect(screen.getByLabelText('Название')).toBeInTheDocument(), { timeout: 1000 })
+  fireEvent.change(screen.getByLabelText('Название'), { target: { value: title } })
+  fireEvent.click(screen.getByRole('button', { name: 'СОХРАНИТЬ ВСТРЕЧУ' }))
+  fireEvent.click(screen.getByRole('button', { name: 'До свидания' }))
 
-  expect(screen.getByRole('article', { name: 'Created meeting' })).toHaveTextContent(title)
+  expect(screen.getByRole('article', { name: 'Созданная встреча' })).toHaveTextContent(title)
   return Date.now() - startedAt
 }
 
@@ -36,9 +36,9 @@ describe('timed demo smoke path', () => {
   afterEach(cleanup)
 
   it('completes twice with real service timers under two minutes', async () => {
-    const first = await completeDemo('Timed run one')
+    const first = await completeDemo('Первый прогон')
     cleanup()
-    const second = await completeDemo('Timed run two')
+    const second = await completeDemo('Второй прогон')
     expect(first).toBeLessThan(120_000)
     expect(second).toBeLessThan(120_000)
   }, 10_000)

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react'
+import { useState, type KeyboardEvent, type PointerEvent } from 'react'
 import './Lockpick.css'
 
 type LockpickProps = {
@@ -8,15 +8,11 @@ type LockpickProps = {
 
 const PICK_MIN_ANGLE = -60
 const PICK_MAX_ANGLE = 60
-const SUCCESS_HOLD_MS = 500
-
 export function Lockpick({ selectedDay, onSuccess }: LockpickProps) {
   const [pickAngle, setPickAngle] = useState(PICK_MIN_ANGLE)
   const [failedAttempt, setFailedAttempt] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
-  const successTimer = useRef<number | undefined>(undefined)
-
-  useEffect(() => () => window.clearTimeout(successTimer.current), [])
+  const [confirmed, setConfirmed] = useState(false)
 
   const sweetSpot = ((selectedDay * 7) % 46) - 23
 
@@ -33,7 +29,6 @@ export function Lockpick({ selectedDay, onSuccess }: LockpickProps) {
     const aligned = Math.abs(pickAngle - sweetSpot) <= 22
     if (aligned || failedAttempt) {
       setIsOpen(true)
-      successTimer.current = window.setTimeout(onSuccess, SUCCESS_HOLD_MS)
       return
     }
 
@@ -49,16 +44,16 @@ export function Lockpick({ selectedDay, onSuccess }: LockpickProps) {
 
   return (
     <section className="lockpick" aria-labelledby="lockpick-title">
-      <p className="lockpick__eyebrow">DATE VERIFICATION // {selectedDay}</p>
-      <h2 id="lockpick-title">Confirm selected date.</h2>
-      <p className="lockpick__lede">Date is locked.</p>
+      <p className="lockpick__eyebrow">ПРОВЕРКА ДАТЫ // {selectedDay}</p>
+      <h2 id="lockpick-title">Подтвердите дату.</h2>
+      <p className="lockpick__lede">Дата заперта.</p>
 
       <div
         className={`lockpick__stage ${failedAttempt && !isOpen ? 'lockpick__stage--rattle' : ''} ${isOpen ? 'lockpick__stage--open' : ''}`}
         data-testid="lockpick-stage"
         tabIndex={0}
         role="application"
-        aria-label="Lock pick. Move the pointer to position the pick, then click or press Space to turn the lock."
+        aria-label="Замок. Перемещайте указатель, затем нажмите или используйте пробел."
         onPointerMove={setAngleFromPointer}
         onClick={attempt}
         onKeyDown={handleKeyDown}
@@ -77,21 +72,38 @@ export function Lockpick({ selectedDay, onSuccess }: LockpickProps) {
         >
           <span />
         </span>
-        <span className="lockpick__instruction" aria-hidden="true">MOVE PICK / TURN LOCK</span>
+        <span className="lockpick__instruction" aria-hidden="true">ДВИГАЙТЕ ОТМЫЧКУ / ПОВЕРНИТЕ ЗАМОК</span>
       </div>
 
       {isOpen ? (
-        <p className="lockpick__result" role="status">Date confirmed.</p>
+        <p className="lockpick__result" role="status">Дата подтверждена.</p>
       ) : (
         <p className="lockpick__feedback" role="status">
-          {failedAttempt ? 'Lock rattles. Adjust the pick.' : 'Find the lock’s acceptable position.'}
+          {failedAttempt ? 'Замок сопротивляется. Измените угол.' : 'Найдите допустимое положение.'}
         </p>
       )}
 
       {!isOpen && (
         <button className="lockpick__turn" type="button" onClick={attempt}>
-          TURN LOCK
+          ПОВЕРНУТЬ ЗАМОК
         </button>
+      )}
+      {isOpen && (
+        <div className="lockpick__confirm" aria-label="Подтверждение даты">
+          <small>ДАТА ОТКРЫТА. ПРОДОЛЖИТЬ?</small>
+          {['Да', 'Вероятно', 'Я уже не уверен'].map((choice) => (
+            <button
+              type="button"
+              key={choice}
+              disabled={confirmed}
+              onClick={() => {
+                if (confirmed) return
+                setConfirmed(true)
+                onSuccess()
+              }}
+            >{choice}</button>
+          ))}
+        </div>
       )}
     </section>
   )

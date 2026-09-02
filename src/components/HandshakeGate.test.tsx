@@ -7,15 +7,15 @@ describe('HandshakeGate', () => {
     const onComplete = vi.fn()
     render(<HandshakeGate mode="handshake" onComplete={onComplete} />)
 
-    fireEvent.click(screen.getByRole('button', { name: 'Firm' }))
-    expect(onComplete).toHaveBeenCalledWith('Firm')
+    fireEvent.click(screen.getByRole('button', { name: 'Твёрдое' }))
+    expect(onComplete).toHaveBeenCalledWith('Твёрдое')
   })
 
   it('accepts a farewell before saving', () => {
     const onComplete = vi.fn()
     render(<HandshakeGate mode="farewell" onComplete={onComplete} />)
 
-    fireEvent.click(screen.getByRole('button', { name: 'Leave respectfully' }))
-    expect(onComplete).toHaveBeenCalledWith('Leave respectfully')
+    fireEvent.click(screen.getByRole('button', { name: 'Уйти с уважением' }))
+    expect(onComplete).toHaveBeenCalledWith('Уйти с уважением')
   })
 })
