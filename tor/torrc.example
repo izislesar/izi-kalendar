@@ -1,0 +1,8 @@
+# Example Tor onion-service config for the demo.
+# Keep the generated hidden-service private keys OUT of git.
+#
+# App should be served locally on 127.0.0.1:8080.
+# Adjust paths for the machine running Tor.
+
+HiddenServiceDir /var/lib/tor/izi-kalendar/
+HiddenServicePort 80 127.0.0.1:8080
