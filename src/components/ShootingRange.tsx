@@ -10,6 +10,7 @@ type ShootingRangeProps = {
 }
 
 const days = Array.from({ length: 30 }, (_, index) => index + 1)
+const SUCCESS_HOLD_MS = 500
 
 export default function ShootingRange({ ammo, onAmmoChange, onDateHit }: ShootingRangeProps) {
   const [weapon, setWeapon] = useState<WeaponState>(ammo > 0 ? 'READY' : 'EMPTY')
@@ -17,7 +18,9 @@ export default function ShootingRange({ ammo, onAmmoChange, onDateHit }: Shootin
   const [shotStep, setShotStep] = useState(0)
   const [servicing, setServicing] = useState(false)
   const [firing, setFiring] = useState(false)
+  const [transitionPending, setTransitionPending] = useState(false)
   const recoilTimer = useRef<number | undefined>(undefined)
+  const transitionTimer = useRef<number | undefined>(undefined)
   const previousAmmo = useRef(ammo)
 
   useEffect(() => {
@@ -32,7 +35,10 @@ export default function ShootingRange({ ammo, onAmmoChange, onDateHit }: Shootin
     previousAmmo.current = ammo
   }, [ammo, weapon])
 
-  useEffect(() => () => window.clearTimeout(recoilTimer.current), [])
+  useEffect(() => () => {
+    window.clearTimeout(recoilTimer.current)
+    window.clearTimeout(transitionTimer.current)
+  }, [])
 
   function flash() {
     setFiring(true)
@@ -41,7 +47,7 @@ export default function ShootingRange({ ammo, onAmmoChange, onDateHit }: Shootin
   }
 
   function shoot(day: number) {
-    if (weapon !== 'READY' || servicing) return
+    if (weapon !== 'READY' || servicing || transitionPending) return
 
     if (ammo <= 0) {
       setWeapon('EMPTY')
@@ -69,7 +75,8 @@ export default function ShootingRange({ ammo, onAmmoChange, onDateHit }: Shootin
 
     setWeapon(remaining > 0 ? 'READY' : 'EMPTY')
     setMessage(`September ${day} selected.`)
-    onDateHit(day)
+    setTransitionPending(true)
+    transitionTimer.current = window.setTimeout(() => onDateHit(day), SUCCESS_HOLD_MS)
   }
 
   function service() {
@@ -112,7 +119,8 @@ export default function ShootingRange({ ammo, onAmmoChange, onDateHit }: Shootin
             className="shooting-range__target"
             key={day}
             aria-label={`September ${day}`}
-            disabled={weapon !== 'READY' || servicing}
+            disabled={weapon !== 'READY' || servicing || transitionPending}
+            style={weapon === 'READY' && !servicing && !transitionPending ? { cursor: 'crosshair' } : undefined}
             onClick={() => shoot(day)}
           >
             <span>{day}</span>

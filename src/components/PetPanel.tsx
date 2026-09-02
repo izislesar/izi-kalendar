@@ -2,12 +2,14 @@ import { useState } from 'react'
 
 type PetPanelProps = {
   ammo: number
+  canFeed: boolean
   onFeed: (rounds: number, food: string) => void
 }
 
-export function PetPanel({ ammo, onFeed }: PetPanelProps) {
+export function PetPanel({ ammo, canFeed, onFeed }: PetPanelProps) {
   const [lastFood, setLastFood] = useState<string | null>(null)
   const feed = (food: string) => {
+    if (!canFeed) return
     setLastFood(food)
     onFeed(3, food)
   }
@@ -23,7 +25,7 @@ export function PetPanel({ ammo, onFeed }: PetPanelProps) {
       {lastFood && <p className="pet-result">Pet consumed {lastFood.toLowerCase()}. +3 ammunition.</p>}
       <div className="feed-actions">
         {['Cookie', 'Onion', 'Browser history'].map((food) => (
-          <button key={food} onClick={() => feed(food)} disabled={ammo > 0}>{food}</button>
+          <button key={food} onClick={() => feed(food)} disabled={!canFeed || ammo > 0}>{food}</button>
         ))}
       </div>
     </aside>

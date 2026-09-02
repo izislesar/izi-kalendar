@@ -59,7 +59,9 @@ function App() {
       </header>
 
       <ParasiteUI phase={phase} notice={notice} />
-      {(phase === 'home' || phase === 'range') && <PetPanel ammo={ammo} onFeed={feedPet} />}
+      {(phase === 'home' || phase === 'range') && (
+        <PetPanel ammo={ammo} canFeed={phase === 'range'} onFeed={feedPet} />
+      )}
 
       <section className="workspace" data-phase={phase}>
         <div className="status-rail">

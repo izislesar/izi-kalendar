@@ -1,4 +1,4 @@
-import { useState, type KeyboardEvent, type PointerEvent } from 'react'
+import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react'
 import './Lockpick.css'
 
 type LockpickProps = {
@@ -8,11 +8,15 @@ type LockpickProps = {
 
 const PICK_MIN_ANGLE = -60
 const PICK_MAX_ANGLE = 60
+const SUCCESS_HOLD_MS = 500
 
 export function Lockpick({ selectedDay, onSuccess }: LockpickProps) {
   const [pickAngle, setPickAngle] = useState(PICK_MIN_ANGLE)
   const [failedAttempt, setFailedAttempt] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const successTimer = useRef<number | undefined>(undefined)
+
+  useEffect(() => () => window.clearTimeout(successTimer.current), [])
 
   const sweetSpot = ((selectedDay * 7) % 46) - 23
 
@@ -29,7 +33,7 @@ export function Lockpick({ selectedDay, onSuccess }: LockpickProps) {
     const aligned = Math.abs(pickAngle - sweetSpot) <= 22
     if (aligned || failedAttempt) {
       setIsOpen(true)
-      onSuccess()
+      successTimer.current = window.setTimeout(onSuccess, SUCCESS_HOLD_MS)
       return
     }
 

@@ -18,8 +18,12 @@ async function completeDemo(title: string) {
   await waitFor(() => expect(screen.getByText('READY')).toBeInTheDocument(), { timeout: 1500 })
 
   fireEvent.click(screen.getByRole('button', { name: 'September 17' }))
+  expect(screen.getByText('September 17 selected.')).toBeInTheDocument()
+  await waitFor(() => expect(screen.getByText('Confirm selected date.')).toBeInTheDocument(), { timeout: 1000 })
   fireEvent.click(screen.getByRole('button', { name: 'TURN LOCK' }))
   fireEvent.click(screen.getByRole('button', { name: 'TURN LOCK' }))
+  expect(screen.getByText('Date confirmed.')).toBeInTheDocument()
+  await waitFor(() => expect(screen.getByLabelText('Title')).toBeInTheDocument(), { timeout: 1000 })
   fireEvent.change(screen.getByLabelText('Title'), { target: { value: title } })
   fireEvent.click(screen.getByRole('button', { name: 'SAVE MEETING' }))
   fireEvent.click(screen.getByRole('button', { name: 'Goodbye' }))
