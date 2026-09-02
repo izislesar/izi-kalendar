@@ -1,0 +1,39 @@
+:root {
+  color: #e9eee9;
+  background: #070908;
+  font-family: Manrope, system-ui, sans-serif;
+  font-synthesis: none;
+  --acid: #b9ff53;
+  --muted: #8c958e;
+  --line: #252b27;
+}
+
+* { box-sizing: border-box; }
+
+body { margin: 0; min-width: 320px; min-height: 100vh; }
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+
+.app-shell { min-height: 100vh; display: grid; grid-template-rows: auto 1fr auto; background: radial-gradient(circle at 70% 20%, #172017 0, transparent 35%), #080a09; }
+.topbar { height: 72px; display: flex; align-items: center; justify-content: space-between; padding: 0 5vw; border-bottom: 1px solid var(--line); }
+.brand { color: inherit; text-decoration: none; display: flex; align-items: center; gap: 12px; font-size: 18px; font-weight: 700; }
+.brand-mark { width: 32px; height: 32px; display: grid; place-items: center; color: #080a09; background: var(--acid); border-radius: 50%; }
+.connection { color: var(--muted); font: 11px DM Mono, monospace; letter-spacing: .1em; }
+.connection span { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--acid); box-shadow: 0 0 12px var(--acid); margin-right: 8px; }
+.workspace { display: grid; grid-template-columns: minmax(120px, 1fr) minmax(300px, 720px) minmax(120px, 1fr); align-items: center; padding: 8vh 5vw; }
+.status-rail { font: 10px DM Mono, monospace; color: #5f6862; letter-spacing: .14em; line-height: 1.8; align-self: start; }
+.phase-card { grid-column: 2; border: 1px solid var(--line); background: rgba(13, 16, 14, .93); padding: clamp(32px, 6vw, 72px); box-shadow: 0 24px 80px rgba(0, 0, 0, .35); }
+.eyebrow { color: var(--acid); font: 11px DM Mono, monospace; letter-spacing: .16em; margin: 0 0 34px; }
+h1 { max-width: 650px; margin: 0; font-size: clamp(42px, 7vw, 76px); letter-spacing: -.055em; line-height: .95; }
+.lede { color: var(--muted); font-size: 17px; margin: 24px 0 44px; }
+.primary { border: 0; padding: 15px 20px; background: var(--acid); color: #090b09; font: 600 12px DM Mono, monospace; letter-spacing: .08em; min-width: 180px; }
+.primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+footer { display: flex; justify-content: space-between; padding: 18px 5vw; color: #535b55; border-top: 1px solid var(--line); font: 9px DM Mono, monospace; letter-spacing: .1em; }
+
+@media (max-width: 720px) {
+  .workspace { display: block; padding: 32px 18px; }
+  .status-rail { display: none; }
+  .phase-card { padding: 36px 24px; }
+  .connection { display: none; }
+  footer span:last-child { display: none; }
+}
