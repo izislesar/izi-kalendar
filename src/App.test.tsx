@@ -45,6 +45,7 @@ describe('Calendar demo', () => {
     fireEvent.change(screen.getByLabelText('Название'), { target: { value: 'Обзор демо' } })
     fireEvent.click(screen.getByRole('button', { name: 'СОХРАНИТЬ ВСТРЕЧУ' }))
     fireEvent.click(screen.getByRole('button', { name: 'До свидания' }))
+    fireEvent.click(screen.getByRole('button', { name: 'ПОДТВЕРДИТЬ ПРОЩАНИЕ' }))
 
     expect(screen.getByRole('article', { name: 'Созданная встреча' })).toHaveTextContent('Обзор демо')
     expect(screen.getByText('Встреча создана.')).toBeInTheDocument()

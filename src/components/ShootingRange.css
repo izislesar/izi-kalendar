@@ -74,3 +74,17 @@
   .shooting-range__weapon { padding-top: 6px; }
   .shooting-range__targets { grid-template-columns: repeat(5, minmax(35px, 1fr)); gap: 8px; padding: 12px; }
 }
+
+.shooting-range { --range-acid: #d0b947; border: 5px ridge #69633d; border-radius: 1px; background: linear-gradient(126deg, #3f4327, #1e241b 54%, #38271d); box-shadow: 10px 12px #120e0a, inset 3px 3px #696b43; }
+.shooting-range__eyebrow { color: #75aaa5; }
+.shooting-range h2 { color: #ded2a1; text-shadow: 2px 2px #21150f; }
+.shooting-range__weapon { border: 4px inset #746b42; border-radius: 0; color: #ded49f; background: #342f1d; box-shadow: 3px 3px #18140c; }
+.shooting-range__weapon--blank { background: #5d4b26; }
+.shooting-range__weapon--jammed, .shooting-range__weapon--empty { background: #65352b; }
+.shooting-range__targets { border: 4px inset #706b43; border-radius: 0; background: repeating-linear-gradient(90deg, rgba(209,184,66,.045) 0 1px, transparent 1px 16px), #24291a; box-shadow: inset 7px 7px #15180f; }
+.shooting-range__target { border: 3px outset #746d47; border-radius: 42%; color: #e2d7a4; background: radial-gradient(circle, #a84534 0 7%, #596346 9% 24%, #252719 26% 45%, #a29150 47% 50%, #302d1b 52%); box-shadow: 3px 3px #16140d; }
+.shooting-range__target:hover:not(:disabled) { border-color: #7a4f76; box-shadow: 5px 5px #17100f, 0 0 0 3px rgba(116,177,169,.14); }
+.shooting-range__message { padding: 8px 10px; border-left: 7px solid #8f4735; color: #d7cda1; background: #2d2a1c; }
+.shooting-range__verification { border: 5px double #6da8a3; border-radius: 0; color: #21302c; background: #79aaa0; box-shadow: 9px 10px #120d0a; }
+.shooting-range__service { border: 4px outset #bda747; border-radius: 0; background: #aa9134; box-shadow: 4px 4px #17130c; }
+.shooting-range__crosshair { border-color: #d1bc4b; border-radius: 0; filter: drop-shadow(2px 2px #571f25); transform: rotate(5deg); }

@@ -16,6 +16,9 @@ describe('HandshakeGate', () => {
     render(<HandshakeGate mode="farewell" onComplete={onComplete} />)
 
     fireEvent.click(screen.getByRole('button', { name: 'Уйти с уважением' }))
+    expect(onComplete).not.toHaveBeenCalled()
+    expect(screen.getByText(/Прощание выбрано/)).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'ПОДТВЕРДИТЬ ПРОЩАНИЕ' }))
     expect(onComplete).toHaveBeenCalledWith('Уйти с уважением')
   })
 })

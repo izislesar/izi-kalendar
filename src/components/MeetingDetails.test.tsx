@@ -7,13 +7,19 @@ describe('MeetingDetails', () => {
     const onSave = vi.fn()
     render(<MeetingDetails selectedDay={17} onSave={onSave} />)
 
+    const time = screen.getByLabelText('Время')
+    expect(time).toHaveValue('14:27')
+    expect(time).toHaveAttribute('step', '1020')
+    expect(time).toBeValid()
+    fireEvent.click(screen.getByRole('button', { name: 'РАЗРЕШИТЬ ОБЫЧНЫЕ МИНУТЫ' }))
+    expect(time).toHaveAttribute('step', '60')
     fireEvent.change(screen.getByLabelText('Название'), { target: { value: 'Обзор демо' } })
     fireEvent.click(screen.getByRole('button', { name: 'СОХРАНИТЬ ВСТРЕЧУ' }))
 
     expect(onSave).toHaveBeenCalledWith({
       title: 'Обзор демо',
       date: '2026-09-17',
-      time: '14:00',
+      time: '14:27',
       duration: '30',
     })
   })

@@ -92,3 +92,69 @@ footer { display: flex; justify-content: space-between; padding: 18px 5vw; color
   .connection { display: none; }
   footer span:last-child { display: none; }
 }
+
+/* Ведомственный терминал: намеренно тяжёлый, плотный и неприятный. */
+:root {
+  color: #d8d0aa;
+  background: #17180f;
+  --acid: #cfb842;
+  --acid-soft: rgba(207, 184, 66, .15);
+  --muted: #9d9674;
+  --line: #665f3e;
+  --glass: rgba(48, 49, 29, .94);
+  --shadow: 9px 11px 0 rgba(22, 12, 7, .72), inset 2px 2px #827a50, inset -3px -3px #17180f;
+}
+
+body { background: #252417; font-family: Arial, "Liberation Sans", sans-serif; }
+.app-shell { background: repeating-linear-gradient(0deg, rgba(201,185,104,.025) 0 1px, transparent 1px 4px), radial-gradient(circle at 82% 12%, rgba(91,129,116,.25), transparent 31%), linear-gradient(117deg, #363820, #191b13 46%, #30231a); }
+.topbar { height: 68px; padding: 0 27px; border-bottom: 4px double #716a3f; background: linear-gradient(#504a29, #292a1b); backdrop-filter: none; box-shadow: inset 0 -3px #17180f, 0 5px 0 rgba(0,0,0,.32); }
+.brand { gap: 9px; color: #e0d59d; font-family: "Courier New", monospace; text-transform: uppercase; letter-spacing: .04em; }
+.brand-mark { width: 39px; height: 35px; border: 2px outset #9a6f92; border-radius: 1px; color: #ead7a2; background: #674465; box-shadow: inset 2px 2px #936f8e, inset -2px -2px #342333; }
+.connection { padding: 8px 12px; border: 2px inset #79704b; color: #c9dda7; background: #263d35; }
+.connection span { background: #73b5ad; box-shadow: 0 0 5px #73b5ad; }
+.workspace { grid-template-columns: minmax(150px, 1fr) minmax(410px, 760px) minmax(105px, .7fr); align-items: start; padding: 92px 4vw 105px 6vw; }
+.status-rail { margin-top: 19px; padding: 13px 10px; border: 2px inset #665f3e; color: #b4aa75; background: rgba(58,57,32,.65); font-family: "Courier New", monospace; }
+.phase-card, .panel { border: 3px outset #746c47; border-radius: 2px; padding: clamp(27px, 4vw, 51px); background: linear-gradient(152deg, rgba(66,67,37,.97), rgba(35,34,23,.98)); box-shadow: var(--shadow); backdrop-filter: none; }
+.phase-card::before, .panel::before { inset: 7px 12px auto; background: #9a8937; }
+.eyebrow { color: #77b7ae; font-family: "Courier New", monospace; letter-spacing: .11em; }
+h1 { font-size: clamp(39px, 5vw, 64px); font-weight: 700; line-height: .97; color: #ded4a7; text-shadow: 2px 2px #251b14; }
+.lede { max-width: 570px; color: #b3aa83; }
+.primary { border: 3px outset #d0b849; border-radius: 1px; color: #2b250f; background: linear-gradient(#d1bd59, #9e8730); box-shadow: 4px 5px #17140c; }
+.primary:hover { transform: translate(2px, 2px); box-shadow: 2px 3px #17140c; }
+.choice-grid { grid-template-columns: 1fr 1.2fr .82fr; gap: 6px 13px; }
+.choice { min-height: 74px; border: 3px outset #756b45; border-radius: 0; color: #d2c89e; background: linear-gradient(#4b4d2c, #31321f); box-shadow: inset 1px 1px #87805a; }
+.choice:hover, .choice--selected { border-color: #8e4d34; color: #f0d377; background: #59402a; transform: translateX(5px); }
+.pet-panel { left: 17px; bottom: 47px; width: 298px; padding: 17px; border: 4px outset #6e693f; border-radius: 3px; color: #2c2a18; background: linear-gradient(135deg, #aba270, #7c794a); box-shadow: 8px 9px #17130c, inset 2px 2px #ccc28d; backdrop-filter: none; }
+.pet-face { border: 4px ridge #5a613c; border-radius: 38% 42% 35% 45%; color: #432c40; background: radial-gradient(circle, #9dae68, #5c6942 66%); box-shadow: inset 5px -7px #39402b, 4px 4px #4b3525; }
+.pet-face::before, .pet-face::after { border-color: #4f3d34; background: #6b7748; }
+.pet-label, .pet-warning, .pet-result { color: #2c2919; font-weight: 700; }
+.pet-panel strong { color: #5b2730; text-shadow: 1px 1px #d0c486; }
+.feed-actions button { border: 3px outset #81794d; border-radius: 0; color: #292719; background: #aaa16c; font-weight: 700; }
+.feed-actions button:hover:not(:disabled) { color: #ede0a8; background: #6d3f30; }
+.fingerprint-toast { top: 78px; right: 17px; border: 3px outset #9a4937; border-radius: 1px; color: #ead0ac; background: #6e3428; box-shadow: 7px 8px #160e0a; backdrop-filter: none; }
+.fingerprint-toast small { color: #f0bd7e; }
+.scan-dot { border-radius: 0; background: #77bbb2; box-shadow: 0 0 4px #77bbb2; }
+.interruption-toast { top: 133px; left: 2vw; border: 3px double #478b86; border-radius: 0; color: #17221e; background: #7faf9d; box-shadow: 6px 7px #16120d; backdrop-filter: none; }
+.interruption-toast small, .interruption-toast p { color: #19302b; }
+.fake-ad { right: 14px; bottom: 45px; width: 370px; border: 5px ridge #8e7140; border-radius: 2px; color: #322512; background: linear-gradient(135deg, #d1bc66, #a77943 62%, #934735); box-shadow: 10px 11px #140e0a, inset 3px 3px #e0ce83; backdrop-filter: none; }
+.fake-ad small { color: #5a261e; font-weight: 700; }
+.fake-ad button { border: 3px outset #825e3e; border-radius: 0; color: #2c1a13; background: #b9945d; font-weight: 900; }
+.app-shell:has(.workspace[data-phase="range"]) .fake-ad { right: 5vw; bottom: 22vh; width: 420px; transform: rotate(1.4deg); }
+.form-grid { grid-template-columns: 1.7fr .74fr 1.05fr; gap: 7px; }
+.form-grid label { color: #bbb17f; font-family: "Courier New", monospace; }
+.form-grid input, .form-grid select { appearance: auto; border: 3px inset #756b45; border-radius: 0; color: #242619; background: #cbc095; box-shadow: inset 2px 2px #706947; }
+.form-grid input:focus, .form-grid select:focus { border-color: #755173; box-shadow: 0 0 0 3px rgba(117,81,115,.35); }
+.minute-restriction { width: 76%; margin: -21px 0 28px auto; padding: 10px; border: 2px dashed #8e4b36; color: #bdae78; background: #33291d; font: 10px "Courier New", monospace; }
+.minute-restriction button { display: block; margin: 8px 0 0 auto; padding: 8px 11px; border: 3px outset #6f6650; border-radius: 0; color: #d4ceb0; background: #574b3b; font: 700 9px "Courier New", monospace; }
+.farewell-confirm { position: fixed; z-index: 16; left: 31px; bottom: 29px; width: 310px; padding: 15px; border: 4px double #755173; color: #ddcfaa; background: #3d303b; box-shadow: 9px 10px #150f13; font: 10px "Courier New", monospace; }
+.farewell-confirm button { display: block; margin: 11px 0 0 auto; padding: 11px; border: 3px outset #d0b849; border-radius: 0; background: #b09b3d; color: #2b230e; font: 700 9px "Courier New", monospace; }
+.event-card { border: 4px double #8c814d; border-radius: 0; background: #454627; box-shadow: inset 3px 3px #60613b; }
+.event-date { color: #d9d3ac; background: #7f3f31; border: 3px outset #9a6049; }
+.event-state { color: #72b0aa; }
+footer { padding: 13px 3vw; border-top: 4px double #67603c; color: #968e66; background: #202117; }
+
+@media (max-width: 720px) {
+  .workspace { padding: 32px 12px 145px; }
+  .minute-restriction { width: 100%; margin-top: 8px; }
+  .farewell-confirm { left: 10px; bottom: 10px; width: min(310px, calc(100vw - 20px)); }
+}

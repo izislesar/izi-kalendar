@@ -162,3 +162,15 @@
   .lockpick__stage { aspect-ratio: 1.15; }
   .lockpick__confirm { right: 12px; bottom: 12px; width: min(270px, calc(100vw - 24px)); }
 }
+
+.lockpick { border: 5px ridge #6d6843; border-radius: 1px; background: radial-gradient(circle at 52% 45%, #45523e, #28291b 55%, #201712); box-shadow: 11px 12px #120c09, inset 3px 3px #696846; }
+.lockpick__eyebrow { color: #73aea8; }
+.lockpick h2 { color: #ddd1a1; text-shadow: 2px 2px #241610; }
+.lockpick__stage { border: 4px inset #655d3e; border-radius: 0; background: radial-gradient(circle at 50% 44%, #596048, #20251a 48%, #17120f 72%); box-shadow: inset 9px 9px #16150f; }
+.lockpick__halo { border: 4px ridge #7e785d; box-shadow: 0 0 0 24px #343523, 0 0 0 28px #523f31, 0 0 45px #000; }
+.lockpick__body { border-color: #93896f; background: conic-gradient(#4e4b38, #9a9276, #50392f, #7e7659, #4e4b38); }
+.lockpick__notch { background: #a64b39; }
+.lockpick__pick { background: linear-gradient(90deg, #67546a, #b09aaa, #543d55); }
+.lockpick__turn { border: 4px outset #b7a240; border-radius: 0; background: #a58d35; box-shadow: 4px 4px #17120c; }
+.lockpick__confirm { border: 5px double #755173; border-radius: 0; color: #d8cfa9; background: #3f303d; box-shadow: 10px 11px #120d10; backdrop-filter: none; }
+.lockpick__confirm button { border: 3px outset #73546f; border-radius: 0; color: #e0d3ad; background: #5c4359; }

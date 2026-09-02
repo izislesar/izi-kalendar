@@ -27,6 +27,7 @@ async function completeDemo(title: string) {
   fireEvent.change(screen.getByLabelText('Название'), { target: { value: title } })
   fireEvent.click(screen.getByRole('button', { name: 'СОХРАНИТЬ ВСТРЕЧУ' }))
   fireEvent.click(screen.getByRole('button', { name: 'До свидания' }))
+  fireEvent.click(screen.getByRole('button', { name: 'ПОДТВЕРДИТЬ ПРОЩАНИЕ' }))
 
   expect(screen.getByRole('article', { name: 'Созданная встреча' })).toHaveTextContent(title)
   return Date.now() - startedAt
