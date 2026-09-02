@@ -14,9 +14,10 @@ describe('Calendar demo', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'СОЗДАТЬ ВСТРЕЧУ' }))
     fireEvent.click(screen.getByRole('button', { name: 'Твёрдое' }))
+    expect(screen.getByText('ДОВЕРИЕ 41/100')).toBeInTheDocument()
 
-    fireEvent.click(screen.getByRole('button', { name: 'Печенье' }))
-    expect(screen.getByText('Предпочтения «печенье» идентифицированы.')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'История браузера · 3' }))
+    expect(screen.getByText('Предпочтения «история браузера» идентифицированы.')).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: '17 сентября' }))
     expect(screen.getByText('Холостой патрон.')).toBeInTheDocument()
@@ -34,6 +35,8 @@ describe('Calendar demo', () => {
     act(() => vi.advanceTimersByTime(1499))
     expect(screen.getByText('17 сентября выбрано.')).toBeInTheDocument()
     act(() => vi.advanceTimersByTime(1))
+    expect(screen.getByText('Контрольный вопрос памяти.')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: '17' }))
     expect(screen.getByText('Подтвердите дату.')).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: 'ПОВЕРНУТЬ ЗАМОК' }))
@@ -43,9 +46,18 @@ describe('Calendar demo', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Вероятно' }))
 
     fireEvent.change(screen.getByLabelText('Название'), { target: { value: 'Обзор демо' } })
+    fireEvent.click(screen.getByRole('button', { name: 'РАЗРЕШИТЬ ОБЫЧНЫЕ МИНУТЫ' }))
+    fireEvent.click(screen.getByRole('button', { name: 'ПОДТВЕРДИТЬ ДОСТУП К МИНУТАМ' }))
     fireEvent.click(screen.getByRole('button', { name: 'СОХРАНИТЬ ВСТРЕЧУ' }))
+    fireEvent.click(screen.getByRole('button', { name: 'ПОДТВЕРДИТЬ НАЗВАНИЕ' }))
+    fireEvent.click(screen.getByRole('button', { name: 'СОХРАНИТЬ ПРОБЕЛЫ' }))
     fireEvent.click(screen.getByRole('button', { name: 'До свидания' }))
     fireEvent.click(screen.getByRole('button', { name: 'ПОДТВЕРДИТЬ ПРОЩАНИЕ' }))
+
+    expect(screen.getByText('Встреча ещё не создана.')).toBeInTheDocument()
+    expect(screen.queryByRole('article', { name: 'Созданная встреча' })).not.toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'ЗАВЕРШИТЬ СОЗДАНИЕ' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Признать неизбежность' }))
 
     expect(screen.getByRole('article', { name: 'Созданная встреча' })).toHaveTextContent('Обзор демо')
     expect(screen.getByText('Встреча создана.')).toBeInTheDocument()
@@ -54,7 +66,7 @@ describe('Calendar demo', () => {
   it('keeps Pet visible but prevents feeding and ammunition changes on Home', () => {
     render(<App />)
 
-    const cookie = screen.getByRole('button', { name: 'Печенье' })
+    const cookie = screen.getByRole('button', { name: 'Печенье · 1' })
     expect(screen.getByRole('complementary', { name: 'Питомец и боеприпасы' })).toBeInTheDocument()
     expect(cookie).toBeDisabled()
 
@@ -66,6 +78,6 @@ describe('Calendar demo', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Твёрдое' }))
 
     expect(screen.getByText('0 ПАТРОНА')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Печенье' })).toBeEnabled()
+    expect(screen.getByRole('button', { name: 'Печенье · 1' })).toBeEnabled()
   })
 })

@@ -12,9 +12,16 @@ describe('MeetingDetails', () => {
     expect(time).toHaveAttribute('step', '1020')
     expect(time).toBeValid()
     fireEvent.click(screen.getByRole('button', { name: 'РАЗРЕШИТЬ ОБЫЧНЫЕ МИНУТЫ' }))
+    expect(time).toHaveAttribute('step', '1020')
+    fireEvent.click(screen.getByRole('button', { name: 'ПОДТВЕРДИТЬ ДОСТУП К МИНУТАМ' }))
     expect(time).toHaveAttribute('step', '60')
     fireEvent.change(screen.getByLabelText('Название'), { target: { value: 'Обзор демо' } })
     fireEvent.click(screen.getByRole('button', { name: 'СОХРАНИТЬ ВСТРЕЧУ' }))
+
+    expect(onSave).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByRole('button', { name: 'ПОДТВЕРДИТЬ НАЗВАНИЕ' }))
+    expect(onSave).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByRole('button', { name: 'СОХРАНИТЬ ПРОБЕЛЫ' }))
 
     expect(onSave).toHaveBeenCalledWith({
       title: 'Обзор демо',

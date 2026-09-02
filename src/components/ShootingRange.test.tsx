@@ -68,6 +68,16 @@ describe('ShootingRange', () => {
     expect(window.getComputedStyle(screen.getByRole('button', { name: '17 сентября' })).cursor).toBe('crosshair')
   })
 
+  it('rejects decoy dates without consuming ammunition', () => {
+    const onAmmoChange = vi.fn()
+    render(<ShootingRange ammo={3} onAmmoChange={onAmmoChange} onDateHit={vi.fn()} />)
+
+    fireEvent.click(screen.getByRole('button', { name: '31 сентября — недействительная цель' }))
+
+    expect(screen.getByRole('status')).toHaveTextContent('Дата не существует. Патрон учтён, но не израсходован.')
+    expect(onAmmoChange).not.toHaveBeenCalled()
+  })
+
   it('cancels the pending date transition when unmounted', () => {
     vi.useFakeTimers()
     let ammo = 3

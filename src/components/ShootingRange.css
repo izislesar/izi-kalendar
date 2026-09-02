@@ -88,3 +88,5 @@
 .shooting-range__verification { border: 5px double #6da8a3; border-radius: 0; color: #21302c; background: #79aaa0; box-shadow: 9px 10px #120d0a; }
 .shooting-range__service { border: 4px outset #bda747; border-radius: 0; background: #aa9134; box-shadow: 4px 4px #17130c; }
 .shooting-range__crosshair { border-color: #d1bc4b; border-radius: 0; filter: drop-shadow(2px 2px #571f25); transform: rotate(5deg); }
+
+.shooting-range__target--decoy { border-style: dashed; opacity: .82; filter: saturate(.72); }

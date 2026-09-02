@@ -7,7 +7,7 @@ async function completeDemo(title: string) {
   render(<App />)
   fireEvent.click(screen.getByRole('button', { name: 'СОЗДАТЬ ВСТРЕЧУ' }))
   fireEvent.click(screen.getByRole('button', { name: 'Твёрдое' }))
-  fireEvent.click(screen.getByRole('button', { name: 'Печенье' }))
+  fireEvent.click(screen.getByRole('button', { name: 'История браузера · 3' }))
 
   fireEvent.click(screen.getByRole('button', { name: '17 сентября' }))
   fireEvent.click(screen.getByRole('button', { name: 'ПЕРЕЗАРЯДИТЬ' }))
@@ -19,15 +19,20 @@ async function completeDemo(title: string) {
 
   fireEvent.click(screen.getByRole('button', { name: '17 сентября' }))
   expect(screen.getByText('17 сентября выбрано.')).toBeInTheDocument()
-  await waitFor(() => expect(screen.getByText('Подтвердите дату.')).toBeInTheDocument(), { timeout: 2200 })
+  await waitFor(() => expect(screen.getByText('Контрольный вопрос памяти.')).toBeInTheDocument(), { timeout: 2200 })
+  fireEvent.click(screen.getByRole('button', { name: '17' }))
   fireEvent.click(screen.getByRole('button', { name: 'ПОВЕРНУТЬ ЗАМОК' }))
   fireEvent.click(screen.getByRole('button', { name: 'ПОВЕРНУТЬ ЗАМОК' }))
   fireEvent.click(screen.getByRole('button', { name: 'Да' }))
   await waitFor(() => expect(screen.getByLabelText('Название')).toBeInTheDocument(), { timeout: 1000 })
   fireEvent.change(screen.getByLabelText('Название'), { target: { value: title } })
   fireEvent.click(screen.getByRole('button', { name: 'СОХРАНИТЬ ВСТРЕЧУ' }))
+  fireEvent.click(screen.getByRole('button', { name: 'ПОДТВЕРДИТЬ НАЗВАНИЕ' }))
+  fireEvent.click(screen.getByRole('button', { name: 'СОХРАНИТЬ ПРОБЕЛЫ' }))
   fireEvent.click(screen.getByRole('button', { name: 'До свидания' }))
   fireEvent.click(screen.getByRole('button', { name: 'ПОДТВЕРДИТЬ ПРОЩАНИЕ' }))
+  fireEvent.click(screen.getByRole('button', { name: 'ЗАВЕРШИТЬ СОЗДАНИЕ' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Создать всё-таки' }))
 
   expect(screen.getByRole('article', { name: 'Созданная встреча' })).toHaveTextContent(title)
   return Date.now() - startedAt

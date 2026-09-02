@@ -7,9 +7,17 @@ afterEach(() => {
 })
 
 describe('Lockpick', () => {
+  function answerMemoryQuestion(container: HTMLElement) {
+    const view = within(container)
+    expect(view.queryByTestId('lockpick-stage')).not.toBeInTheDocument()
+    fireEvent.click(view.getByRole('button', { name: '17' }))
+    expect(view.getByText('Ответ принят без улучшения рейтинга.')).toBeInTheDocument()
+  }
+
   it('maps pointer movement across the lock to the pick angle', () => {
     const { container } = render(<Lockpick selectedDay={17} onSuccess={vi.fn()} />)
     const { getByTestId } = within(container)
+    answerMemoryQuestion(container)
 
     const lock = getByTestId('lockpick-stage')
     Object.defineProperty(lock, 'getBoundingClientRect', {
@@ -27,6 +35,7 @@ describe('Lockpick', () => {
       <Lockpick selectedDay={17} onSuccess={onSuccess} />,
     )
     const { getByRole, getByTestId, getByText } = within(container)
+    answerMemoryQuestion(container)
 
     fireEvent.keyDown(getByTestId('lockpick-stage'), { key: ' ' })
 
@@ -46,7 +55,8 @@ describe('Lockpick', () => {
 
   it.each(['Да', 'Вероятно', 'Я уже не уверен'])('allows confirmation with “%s”', (choice) => {
     const onSuccess = vi.fn()
-    const { getByRole, getByTestId } = render(<Lockpick selectedDay={17} onSuccess={onSuccess} />)
+    const { container, getByRole, getByTestId } = render(<Lockpick selectedDay={17} onSuccess={onSuccess} />)
+    answerMemoryQuestion(container)
     fireEvent.click(getByTestId('lockpick-stage'))
     fireEvent.click(getByTestId('lockpick-stage'))
     fireEvent.click(getByRole('button', { name: choice }))

@@ -10,19 +10,38 @@ const ads: Record<Phase, string> = {
   farewell: 'VPN ДЛЯ TOR — Ещё один слой без особой причины.',
   done: 'ГОРЯЧИЕ ЗНАКОМСТВА В ВАШЕМ ЧАСОВОМ ПОЯСЕ — UTC+3.',
 }
+const bannerAds: Record<Phase, string> = {
+  home: 'УВЕДОМЛЕНИЕ О КУКИ — Календарь уже всё записал.',
+  handshake: 'АНОНИМНОСТЬ+ — Мы знаем, что вы это читаете.',
+  range: 'ПРЕМИАЛЬНЫЙ ПИТОМЕЦ — Остаётся голодным на 40% дольше.',
+  lockpick: 'ОТМЫЧКИ ОПТОМ — Скидка после первой сломанной.',
+  details: 'СЛУЖЕБНЫЕ ИНТЕРВАЛЫ — Теперь и по 34 минуты.',
+  farewell: 'СТРАХОВАНИЕ ПРОЩАНИЙ — Покрывает неуважение к Календарю.',
+  done: 'ЗАПИСЬ НА СЛЕДУЮЩУЮ ВСТРЕЧУ — Очередь уже идёт.',
+}
 const interruptions = [
   'Ваше поведение мыши идентифицировано.',
   'Календарь заметил промедление.',
   'Ваше предпочтение вторников записано.',
+  'Хранение данных отключено. Память Календаря безупречна.',
+  'Ваша пунктуальность оценена как подозрительная.',
 ]
+
+const BANNER_DELAY_MS = 2600
 
 export function ParasiteUI({ phase, notice }: { phase: Phase; notice: string }) {
   const [adVisible, setAdVisible] = useState(true)
+  const [bannerVisible, setBannerVisible] = useState(false)
   const [interruption, setInterruption] = useState(0)
   useEffect(() => {
     const timer = window.setInterval(() => setInterruption((value) => (value + 1) % interruptions.length), 3500)
     return () => window.clearInterval(timer)
   }, [])
+  useEffect(() => {
+    setBannerVisible(false)
+    const timer = window.setTimeout(() => setBannerVisible(true), BANNER_DELAY_MS)
+    return () => window.clearTimeout(timer)
+  }, [phase])
   return (
     <>
       <div className="fingerprint-toast" role="status">
@@ -38,6 +57,13 @@ export function ParasiteUI({ phase, notice }: { phase: Phase; notice: string }) 
           <small>РЕКЛАМА // ЛОКАЛЬНАЯ</small>
           <p>{ads[phase]}</p>
           <button type="button" aria-label="Закрыть рекламу" onClick={() => setAdVisible(false)}>×</button>
+        </aside>
+      )}
+      {bannerVisible && (
+        <aside className="fake-ad fake-ad--banner" aria-label="Срочное объявление">
+          <small>ВАЖНО // БЕЗ ПРАВА ОТКАЗА</small>
+          <p>{bannerAds[phase]}</p>
+          <button type="button" aria-label="Скрыть объявление" onClick={() => setBannerVisible(false)}>×</button>
         </aside>
       )}
     </>

@@ -11,7 +11,13 @@ type ShootingRangeProps = {
 }
 
 const days = Array.from({ length: 30 }, (_, index) => index + 1)
+const decoys = [31, 32]
 const SUCCESS_HOLD_MS = 1500
+const verificationSteps = [
+  'ПРОВЕРКА НАМЕРЕНИЯ',
+  'ПРОВЕРКА ТРАЕКТОРИИ',
+  'ПРОВЕРКА ЛЕГИТИМНОСТИ КАЛЕНДАРЯ',
+]
 
 export default function ShootingRange({ ammo, onAmmoChange, onDateHit }: ShootingRangeProps) {
   const [weapon, setWeapon] = useState<WeaponState>(ammo > 0 ? 'READY' : 'EMPTY')
@@ -20,10 +26,12 @@ export default function ShootingRange({ ammo, onAmmoChange, onDateHit }: Shootin
   const [servicing, setServicing] = useState(false)
   const [firing, setFiring] = useState(false)
   const [transitionPending, setTransitionPending] = useState(false)
+  const [verifyStep, setVerifyStep] = useState(0)
   const [maskDates, setMaskDates] = useState(false)
   const [crosshair, setCrosshair] = useState({ x: 0, y: 0 })
   const recoilTimer = useRef<number | undefined>(undefined)
   const transitionTimer = useRef<number | undefined>(undefined)
+  const verifyTimer = useRef<number | undefined>(undefined)
   const maskTimer = useRef<number | undefined>(undefined)
   const unmaskTimer = useRef<number | undefined>(undefined)
   const previousAmmo = useRef(ammo)
@@ -48,6 +56,7 @@ export default function ShootingRange({ ammo, onAmmoChange, onDateHit }: Shootin
     return () => {
       window.clearTimeout(recoilTimer.current)
       window.clearTimeout(transitionTimer.current)
+      window.clearTimeout(verifyTimer.current)
       window.clearInterval(maskTimer.current)
       window.clearTimeout(unmaskTimer.current)
     }
@@ -89,7 +98,16 @@ export default function ShootingRange({ ammo, onAmmoChange, onDateHit }: Shootin
     setWeapon(remaining > 0 ? 'READY' : 'EMPTY')
     setMessage(`${day} сентября выбрано.`)
     setTransitionPending(true)
+    setVerifyStep(0)
+    verifyTimer.current = window.setInterval(() => {
+      setVerifyStep((step) => Math.min(step + 1, verificationSteps.length - 1))
+    }, 500)
     transitionTimer.current = window.setTimeout(() => onDateHit(day), SUCCESS_HOLD_MS)
+  }
+
+  function shootDecoy() {
+    if (servicing || transitionPending) return
+    setMessage('Дата не существует. Патрон учтён, но не израсходован.')
   }
 
   function service() {
@@ -125,7 +143,7 @@ export default function ShootingRange({ ammo, onAmmoChange, onDateHit }: Shootin
       </div>
 
       <p className="shooting-range__message" role="status">{message}</p>
-      {transitionPending && <p className="shooting-range__verification">ПРОВЕРКА СОВПАДЕНИЯ ДАТЫ · 1,5 СЕК.</p>}
+      {transitionPending && <p className="shooting-range__verification">{verificationSteps[verifyStep]} · {Math.max(1, 2 - verifyStep)} ИЗ 3</p>}
 
       <div
         className="shooting-range__targets"
@@ -145,6 +163,17 @@ export default function ShootingRange({ ammo, onAmmoChange, onDateHit }: Shootin
             onClick={() => shoot(day)}
           >
             <span>{maskDates ? '?' : day}</span>
+          </button>
+        ))}
+        {decoys.map((day) => (
+          <button
+            className="shooting-range__target shooting-range__target--decoy"
+            key={`decoy-${day}`}
+            aria-label={`${day} сентября — недействительная цель`}
+            disabled={servicing || transitionPending}
+            onClick={shootDecoy}
+          >
+            <span>{day}</span>
           </button>
         ))}
         <span

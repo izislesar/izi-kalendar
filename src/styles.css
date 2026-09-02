@@ -158,3 +158,13 @@ footer { padding: 13px 3vw; border-top: 4px double #67603c; color: #968e66; back
   .minute-restriction { width: 100%; margin-top: 8px; }
   .farewell-confirm { left: 10px; bottom: 10px; width: min(310px, calc(100vw - 20px)); }
 }
+
+/* Пятый круг: отложенное завершение и служебная зона. */
+.save-confirm { margin: 18px 0 0; padding: 12px; border: 3px double #755173; color: #ddcfaa; background: #3d303b; box-shadow: 6px 7px #150f13; font: 10px "Courier New", monospace; }
+.save-confirm button { display: block; margin: 9px 0 0 auto; padding: 9px 12px; border: 3px outset #d0b849; border-radius: 0; background: #b09b3d; color: #2b230e; font: 700 9px "Courier New", monospace; }
+.save-confirm--spaces { margin-left: 34%; border-style: dashed; }
+.finalize-strip { position: fixed; z-index: 15; left: 8px; bottom: 4px; display: flex; align-items: center; gap: 10px; padding: 6px 9px; border: 2px inset #665f3e; color: #968e66; background: #202117; font: 8px "Courier New", monospace; }
+.finalize-strip button { padding: 5px 8px; border: 2px outset #6f6650; border-radius: 0; color: #b7ad7c; background: #413a28; font: 700 8px "Courier New", monospace; }
+.finalize-strip button:hover { color: #f0d377; background: #59402a; }
+.fake-ad--banner { left: 50%; right: auto; bottom: 24px; width: min(520px, calc(100vw - 32px)); transform: translateX(-50%) rotate(-.5deg); z-index: 13; }
+.app-shell:has(.workspace[data-phase="details"]) .fake-ad--banner { bottom: 34vh; transform: translateX(-50%) rotate(.7deg); }

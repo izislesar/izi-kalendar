@@ -174,3 +174,8 @@
 .lockpick__turn { border: 4px outset #b7a240; border-radius: 0; background: #a58d35; box-shadow: 4px 4px #17120c; }
 .lockpick__confirm { border: 5px double #755173; border-radius: 0; color: #d8cfa9; background: #3f303d; box-shadow: 10px 11px #120d10; backdrop-filter: none; }
 .lockpick__confirm button { border: 3px outset #73546f; border-radius: 0; color: #e0d3ad; background: #5c4359; }
+
+.lockpick__memory-options { display: flex; justify-content: center; gap: 10px; margin: 6px 0 4px; }
+.lockpick__memory-options button { min-width: 74px; min-height: 58px; border: 3px outset #756b45; border-radius: 0; color: #d2c89e; background: linear-gradient(#4b4d2c, #31321f); box-shadow: inset 1px 1px #87805a; font: 700 17px "Courier New", monospace; }
+.lockpick__memory-options button:hover { border-color: #8e4d34; color: #f0d377; background: #59402a; transform: translateX(3px); }
+.lockpick__memory-note { margin: 0 0 14px; color: #9d9674; font: 10px "Courier New", monospace; letter-spacing: .1em; text-transform: uppercase; }

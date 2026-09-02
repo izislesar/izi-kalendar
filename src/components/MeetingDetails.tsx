@@ -11,9 +11,17 @@ export function MeetingDetails({ selectedDay, onSave }: { selectedDay: number; o
   const [title, setTitle] = useState('Важная встреча')
   const [time, setTime] = useState('14:27')
   const [duration, setDuration] = useState('30')
+  const [precisionRequested, setPrecisionRequested] = useState(false)
   const [precisionUnlocked, setPrecisionUnlocked] = useState(false)
+  const [saveStep, setSaveStep] = useState(0)
   const submit = (event: FormEvent) => {
     event.preventDefault()
+    if (saveStep === 0) {
+      setSaveStep(1)
+      return
+    }
+  }
+  const finishSave = () => {
     onSave({ title, date: `2026-09-${String(selectedDay).padStart(2, '0')}`, time, duration })
   }
 
@@ -28,9 +36,26 @@ export function MeetingDetails({ selectedDay, onSave }: { selectedDay: number; o
       </div>
       <div className="minute-restriction">
         <span>{precisionUnlocked ? 'Обычные минуты временно разрешены.' : 'Доступны только служебные интервалы по 17 минут.'}</span>
-        {!precisionUnlocked && <button type="button" onClick={() => setPrecisionUnlocked(true)}>РАЗРЕШИТЬ ОБЫЧНЫЕ МИНУТЫ</button>}
+        {!precisionUnlocked && !precisionRequested && (
+          <button type="button" onClick={() => setPrecisionRequested(true)}>РАЗРЕШИТЬ ОБЫЧНЫЕ МИНУТЫ</button>
+        )}
+        {precisionRequested && !precisionUnlocked && (
+          <button type="button" onClick={() => setPrecisionUnlocked(true)}>ПОДТВЕРДИТЬ ДОСТУП К МИНУТАМ</button>
+        )}
       </div>
       <button className="primary" type="submit">СОХРАНИТЬ ВСТРЕЧУ</button>
+      {saveStep >= 1 && (
+        <div className="save-confirm">
+          <small>НАЗВАНИЕ ЗАФИКСИРОВАНО: «{title.toUpperCase()}». ОТКАЗ НЕ ПРЕДУСМОТРЕН.</small>
+          <button type="button" onClick={() => setSaveStep(2)}>ПОДТВЕРДИТЬ НАЗВАНИЕ</button>
+        </div>
+      )}
+      {saveStep >= 2 && (
+        <div className="save-confirm save-confirm--spaces">
+          <small>В НАЗВАНИИ ОБНАРУЖЕНЫ ПРОБЕЛЫ. ОНИ БУДУТ СОХРАНЕНЫ БЕЗ ИЗМЕНЕНИЙ.</small>
+          <button type="button" onClick={finishSave}>СОХРАНИТЬ ПРОБЕЛЫ</button>
+        </div>
+      )}
     </form>
   )
 }

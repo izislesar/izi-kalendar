@@ -8,13 +8,26 @@ type LockpickProps = {
 
 const PICK_MIN_ANGLE = -60
 const PICK_MAX_ANGLE = 60
+const MAX_WRONG_ANSWERS = 2
 export function Lockpick({ selectedDay, onSuccess }: LockpickProps) {
+  const [memoryAnswered, setMemoryAnswered] = useState(false)
+  const [wrongAnswers, setWrongAnswers] = useState(0)
   const [pickAngle, setPickAngle] = useState(PICK_MIN_ANGLE)
   const [failedAttempt, setFailedAttempt] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [confirmed, setConfirmed] = useState(false)
 
   const sweetSpot = ((selectedDay * 7) % 46) - 23
+  const memoryOptions = [selectedDay - 1, selectedDay, selectedDay + 1]
+
+  function answerMemory(day: number) {
+    if (memoryAnswered) return
+    if (day === selectedDay || wrongAnswers >= MAX_WRONG_ANSWERS) {
+      setMemoryAnswered(true)
+      return
+    }
+    setWrongAnswers((count) => count + 1)
+  }
 
   function setAngleFromPointer(event: PointerEvent<HTMLDivElement>) {
     const bounds = event.currentTarget.getBoundingClientRect()
@@ -45,10 +58,30 @@ export function Lockpick({ selectedDay, onSuccess }: LockpickProps) {
   return (
     <section className="lockpick" aria-labelledby="lockpick-title">
       <p className="lockpick__eyebrow">ПРОВЕРКА ДАТЫ // {selectedDay}</p>
-      <h2 id="lockpick-title">Подтвердите дату.</h2>
-      <p className="lockpick__lede">Дата заперта.</p>
+      {!memoryAnswered ? (
+        <>
+          <h2 id="lockpick-title">Контрольный вопрос памяти.</h2>
+          <p className="lockpick__lede">Какое число сентября было выбрано?</p>
+          <div className="lockpick__memory-options">
+            {memoryOptions.map((day) => (
+              <button type="button" key={day} onClick={() => answerMemory(day)}>{day}</button>
+            ))}
+          </div>
+          <p className="lockpick__feedback" role="status">
+            {wrongAnswers === 0
+              ? 'Ответ обязателен. Подсказки отсутствуют.'
+              : wrongAnswers >= MAX_WRONG_ANSWERS
+                ? 'Память признана несостоятельной. Допуск вынужденно расширен.'
+                : 'Ответ отклонён. Попытка записана.'}
+          </p>
+        </>
+      ) : (
+        <>
+          <h2 id="lockpick-title">Подтвердите дату.</h2>
+          <p className="lockpick__lede">Дата заперта.</p>
+          <p className="lockpick__memory-note">Ответ принят без улучшения рейтинга.</p>
 
-      <div
+          <div
         className={`lockpick__stage ${failedAttempt && !isOpen ? 'lockpick__stage--rattle' : ''} ${isOpen ? 'lockpick__stage--open' : ''}`}
         data-testid="lockpick-stage"
         tabIndex={0}
@@ -104,6 +137,8 @@ export function Lockpick({ selectedDay, onSuccess }: LockpickProps) {
             >{choice}</button>
           ))}
         </div>
+      )}
+        </>
       )}
     </section>
   )
