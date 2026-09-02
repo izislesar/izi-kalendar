@@ -1,2 +1,6 @@
 # Beads repository configuration
-sync.remote: "git+ssh://git@github.com/izislesar/izi-kalendar.git"
+#
+# Intentionally no sync.remote here.
+# This sprint uses a local Beads database; normal source code still uses GitHub
+# through git's origin remote. A git-backed Dolt remote can be configured later
+# with `bd dolt remote add` if persistence across machines is ever needed.
