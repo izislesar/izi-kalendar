@@ -1,0 +1,148 @@
+.lockpick {
+  color: #e9eee9;
+  text-align: center;
+}
+
+.lockpick__eyebrow {
+  margin: 0 0 18px;
+  color: var(--acid, #b9ff53);
+  font: 11px DM Mono, monospace;
+  letter-spacing: .16em;
+}
+
+.lockpick h2 {
+  margin: 0;
+  font-size: clamp(32px, 5vw, 54px);
+  letter-spacing: -.05em;
+}
+
+.lockpick__lede {
+  margin: 12px 0 30px;
+  color: var(--muted, #8c958e);
+}
+
+.lockpick__stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(100%, 420px);
+  aspect-ratio: 1.35;
+  margin: 0 auto;
+  overflow: hidden;
+  cursor: crosshair;
+  outline: 1px solid #29302b;
+  background: radial-gradient(circle at 50% 44%, #262d29, #0b0e0c 63%);
+  user-select: none;
+}
+
+.lockpick__stage:focus-visible {
+  outline: 2px solid var(--acid, #b9ff53);
+  outline-offset: 4px;
+}
+
+.lockpick__halo {
+  position: absolute;
+  width: 190px;
+  aspect-ratio: 1;
+  border: 1px solid #4b554d;
+  border-radius: 50%;
+  box-shadow: 0 0 0 20px #151a17, 0 0 0 21px #364038, 0 0 50px #000;
+}
+
+.lockpick__body {
+  position: relative;
+  z-index: 1;
+  width: 158px;
+  aspect-ratio: 1;
+  border: 12px solid #8a938b;
+  border-radius: 50%;
+  background: conic-gradient(from 20deg, #333b35, #899288, #303732, #687269, #333b35);
+  box-shadow: inset 0 0 0 7px #161b18, 0 7px 18px #0009;
+  transition: transform 420ms cubic-bezier(.2, .8, .25, 1);
+}
+
+.lockpick__keyway {
+  position: absolute;
+  inset: 35% 20%;
+  background: #0a0d0b;
+  clip-path: polygon(0 32%, 44% 32%, 44% 0, 100% 0, 100% 100%, 44% 100%, 44% 68%, 0 68%);
+}
+
+.lockpick__notch {
+  position: absolute;
+  top: -12px;
+  left: calc(50% - 3px);
+  width: 6px;
+  height: 16px;
+  background: var(--acid, #b9ff53);
+}
+
+.lockpick__pick {
+  position: absolute;
+  z-index: 2;
+  bottom: 24%;
+  left: 50%;
+  width: 7px;
+  height: 145px;
+  transform-origin: 50% 100%;
+  background: linear-gradient(90deg, #b3bcb1, #f1f5ef 45%, #6c766d);
+  box-shadow: 0 0 12px #c7ddbc55;
+  transition: transform 90ms linear;
+}
+
+.lockpick__pick span {
+  position: absolute;
+  top: -10px;
+  left: -4px;
+  width: 15px;
+  height: 28px;
+  border-radius: 8px 8px 2px 2px;
+  background: #dce5d9;
+}
+
+.lockpick__instruction {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  color: #788179;
+  font: 9px DM Mono, monospace;
+  letter-spacing: .12em;
+}
+
+.lockpick__feedback,
+.lockpick__result {
+  min-height: 24px;
+  margin: 18px 0;
+  color: #aeb7af;
+}
+
+.lockpick__result {
+  color: var(--acid, #b9ff53);
+}
+
+.lockpick__turn {
+  border: 1px solid #3d473f;
+  padding: 12px 18px;
+  color: #0a0d0a;
+  background: var(--acid, #b9ff53);
+  font: 700 11px DM Mono, monospace;
+  letter-spacing: .12em;
+}
+
+.lockpick__turn:hover { filter: brightness(1.08); }
+
+.lockpick__stage--rattle .lockpick__body {
+  animation: lockpick-rattle 240ms ease-in-out 2;
+}
+
+.lockpick__stage--open .lockpick__body { transform: rotate(76deg); }
+.lockpick__stage--open .lockpick__halo { border-color: var(--acid, #b9ff53); box-shadow: 0 0 0 20px #151a17, 0 0 30px #b9ff5355; }
+
+@keyframes lockpick-rattle {
+  25% { transform: rotate(-8deg); }
+  75% { transform: rotate(8deg); }
+}
+
+@media (max-width: 520px) {
+  .lockpick__stage { aspect-ratio: 1.15; }
+}
